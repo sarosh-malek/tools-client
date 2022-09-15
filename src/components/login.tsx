@@ -1,5 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { updateUser } from '../features/user/user-slice';
 import { useMutation } from '@apollo/client';
 import { GET_USER } from '../graphql/mutation';
 import { toast } from 'react-toastify';
@@ -10,7 +12,6 @@ interface Form {
 }
 
 export const Login = () => {
-  const user = useAppSelector((state) => state.users.email);
   const dispatch = useAppDispatch();
   const [formValue, setFormValue] = useState<Form>({
     userNameOrEmail: '',
@@ -19,7 +20,7 @@ export const Login = () => {
   const [errorMessage, setError] = useState('');
   const [formError, setFormError] = useState('');
   const [fetchUser, { data, loading, error }] = useMutation(GET_USER);
-
+  const navigate = useNavigate();
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     for (let values of Object.values(formValue)) {
@@ -40,6 +41,8 @@ export const Login = () => {
         toast.success(
           `Welcome ${mutationResult.data.loginUser.user.userName}!`
         );
+        dispatch(updateUser(mutationResult.data.loginUser.user.userName));
+        navigate('/home');
         setError('');
       })
       .catch((e) => {
@@ -56,7 +59,7 @@ export const Login = () => {
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="email"
+            type="text"
             onChange={(e) =>
               setFormValue({ ...formValue, userNameOrEmail: e.target.value })
             }
