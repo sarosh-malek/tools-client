@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
+import axios from 'axios';
 import { FormEvent, useState } from 'react';
+import { API } from '../Api';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { updateUser } from '../features/user/user-slice';
-import { ADD_USER } from '../graphql/mutation';
 
 interface Form {
   userName: string;
@@ -23,8 +23,6 @@ export const SignIn = () => {
   const [errorMessage, setError] = useState('');
   const [formError, setFormError] = useState('');
 
-  const [addUser, { data, loading, error }] = useMutation(ADD_USER);
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     for (let values of Object.values(formValue)) {
@@ -39,16 +37,16 @@ export const SignIn = () => {
       return;
     }
     setFormError('');
-    addUser({ variables: formValue })
-      .then((mutationResult) => {
-        if (mutationResult.data.registerNewUser.errors) {
-          setError(mutationResult.data.registerNewUser.errors[0].message);
-        }
-        setError('');
-      })
-      .catch((e) => {
-        console.log(e);
+    try {
+      const { confirmPassword, ...data } = formValue;
+      const user = await axios.post(API.SIGNUP, {
+        data,
       });
+
+      console.log(user);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

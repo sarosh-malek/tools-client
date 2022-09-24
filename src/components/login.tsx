@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { updateUser } from '../features/user/user-slice';
-import { useMutation } from '@apollo/client';
-import { GET_USER } from '../graphql/mutation';
+import { updateUser } from '../features/user/userSlice';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import { API } from '../Api';
 
 interface Form {
   userNameOrEmail: string;
@@ -19,35 +19,35 @@ export const Login = () => {
   });
   const [errorMessage, setError] = useState('');
   const [formError, setFormError] = useState('');
-  const [fetchUser, { data, loading, error }] = useMutation(GET_USER);
   const navigate = useNavigate();
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     for (let values of Object.values(formValue)) {
       if (values === '') {
-        console.log(values);
         setFormError('all fields are mandatory');
         return;
       }
     }
     setFormError('');
 
-    fetchUser({ variables: formValue })
-      .then((mutationResult) => {
-        if (mutationResult.data.loginUser.errors) {
-          setError(mutationResult.data.loginUser.errors[0].message);
-          return;
-        }
-        toast.success(
-          `Welcome ${mutationResult.data.loginUser.user.userName}!`
-        );
-        dispatch(updateUser(mutationResult.data.loginUser.user.userName));
+    try {
+      const user = await axios.post(API.LOGIN, {
+        ...formValue,
+      });
+      if (user.data.error) {
+        setError('Incorrect user name or password');
+        return;
+      }
+      if (user.data.userName) {
+        const userName = user.data.userName;
+        toast.success(`Welcome ${userName}!`);
+        dispatch(updateUser(userName));
         navigate('/home');
         setError('');
-      })
-      .catch((e) => {
-        console.log('Catching the error!'); // 3.5 Catching errors if any
-      });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

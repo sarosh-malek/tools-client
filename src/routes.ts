@@ -1,6 +1,6 @@
-import { Home } from './components/home-page';
-import { Login } from './components/login';
-import { SignIn } from './components/signup';
+import { Home } from './components/HomePage';
+import { Login } from './components/Login';
+import { SignIn } from './components/Signup';
 
 const routes = [
   {
