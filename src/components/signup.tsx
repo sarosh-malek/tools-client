@@ -1,8 +1,7 @@
-import { useMutation } from '@apollo/client';
 import axios from 'axios';
 import { FormEvent, useState } from 'react';
 import { API } from '../Api';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useNavigate } from 'react-router-dom';
 
 interface Form {
   userName: string;
@@ -12,8 +11,6 @@ interface Form {
 }
 
 export const SignIn = () => {
-  const user = useAppSelector((state) => state.users.email);
-  const dispatch = useAppDispatch();
   const [formValue, setFormValue] = useState<Form>({
     userName: '',
     email: '',
@@ -22,7 +19,7 @@ export const SignIn = () => {
   });
   const [errorMessage, setError] = useState('');
   const [formError, setFormError] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     for (let values of Object.values(formValue)) {
@@ -42,8 +39,7 @@ export const SignIn = () => {
       const user = await axios.post(API.SIGNUP, {
         data,
       });
-
-      console.log(user);
+      navigate('/login');
     } catch (err) {
       console.log(err);
     }

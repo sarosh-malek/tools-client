@@ -2,12 +2,14 @@ import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
+  AnyAction,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API } from '../Api';
 import { RootState } from '../app/store';
 
 interface AdapterProp {
+  _id?: string;
   emoji: string;
   title: string;
   subPages: string[];
