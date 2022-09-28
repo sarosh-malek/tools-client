@@ -34,7 +34,7 @@ export const addNewPage = createAsyncThunk(
     const res = await axios.post(API.ADD_PAGE, {
       ...params,
     });
-    return res.data;
+    return res.data._doc;
   }
 );
 
@@ -48,8 +48,8 @@ export const pageSlice = createSlice({
         state.status = 'pending';
       })
       .addCase(fetchPages.fulfilled, (state, action) => {
-        state.status = 'success';
         pageAdapter.upsertMany(state, action.payload);
+        state.status = 'success';
       })
       .addCase(fetchPages.rejected, (state, action) => {
         state.status = 'failed';

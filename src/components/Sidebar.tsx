@@ -11,7 +11,7 @@ export const Sidebar = () => {
   let content;
   if (pageStatus === 'pending') {
     content = <div>Pending....</div>;
-  } else {
+  } else if (pageStatus === 'success') {
     content = pages.map((page) => {
       return (
         <div key={page._id}>

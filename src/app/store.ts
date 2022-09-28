@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import thunkMiddleware from 'redux-thunk';
 import userReducer from '../features/user/userSlice';
 import pageReducer from '../features/pageSlice';
 
@@ -7,6 +8,7 @@ export const store = configureStore({
     users: userReducer,
     pages: pageReducer,
   },
+  middleware: [thunkMiddleware],
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

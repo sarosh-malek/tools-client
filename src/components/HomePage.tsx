@@ -3,8 +3,9 @@ import { MainArea } from './MainArea';
 import { Sidebar } from './Sidebar';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { fetchPages } from '../features/pageSlice';
+import React from 'react';
 
-export const Home = () => {
+export const Home = React.memo(() => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchPages());
@@ -15,4 +16,4 @@ export const Home = () => {
       <MainArea />
     </section>
   );
-};
+});

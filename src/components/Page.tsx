@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { Emoji } from './Emoji';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { CgMenuRightAlt } from 'react-icons/cg';
+import { Emoji } from './Emoji';
 
 export const Page = () => {
   return (

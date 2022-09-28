@@ -1,20 +1,26 @@
-import { TbDotsCircleHorizontal } from 'react-icons/all';
+import { IoFastFood, TbDotsCircleHorizontal } from 'react-icons/all';
 import { Page } from './Page';
-import { selectPageIds, addNewPage } from '../features/pageSlice';
+import {
+  selectPageIds,
+  addNewPage,
+  getPageStatus,
+} from '../features/pageSlice';
 import { useAppSelector } from '../app/hooks';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 export const MainArea = () => {
-  const pageiIds = useAppSelector(selectPageIds);
   const dispatch = useDispatch();
+  const ids = useAppSelector(selectPageIds);
+  const status = useAppSelector(getPageStatus);
+
   useEffect(() => {
-    if (pageiIds.length == 0) {
-      dispatch(
-        addNewPage({ title: 'Getting started', emoji: '🚀', subPages: [] })
-      );
+    if (ids.length === 0 && status === 'success') {
+      console.log(ids);
+      dispatch(addNewPage({ title: 'getting started', subPages: [] }));
     }
-  }, []);
+  });
+
   return (
     <div className="flex-col w-full">
       <nav className="flex content-center items-center justify-between flex-wrap p-6 h-[5vh]">
