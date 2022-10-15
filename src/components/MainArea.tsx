@@ -1,4 +1,4 @@
-import { IoFastFood, TbDotsCircleHorizontal } from 'react-icons/all';
+import { TbDotsCircleHorizontal } from 'react-icons/all';
 import { Page } from './Page';
 import {
   selectPageIds,
@@ -9,6 +9,7 @@ import { useAppSelector } from '../app/hooks';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
+import { Table } from './reactTable';
 export const MainArea = () => {
   const dispatch = useDispatch();
   const ids = useAppSelector(selectPageIds);
@@ -17,7 +18,13 @@ export const MainArea = () => {
   useEffect(() => {
     if (ids.length === 0 && status === 'success') {
       console.log(ids);
-      dispatch(addNewPage({ title: 'getting started', subPages: [] }));
+      dispatch(
+        addNewPage({
+          title: 'getting started',
+          subPages: [],
+          emoji: '',
+        })
+      );
     }
   });
 
@@ -29,7 +36,7 @@ export const MainArea = () => {
           <TbDotsCircleHorizontal />
         </div>
       </nav>
-      <Page />
+      <Table />
     </div>
   );
 };

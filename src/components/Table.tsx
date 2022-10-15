@@ -4,11 +4,12 @@ import {
   BsPlusLg,
   FcTodoList,
 } from 'react-icons/all';
+import { TableTextField } from '../fields/tableTextField';
 import { Emoji } from './Emoji';
 
 export const Table = () => {
   const ref = useRef(null);
-
+  const textAreaRef = useRef(null);
   useEffect(() => {
     document.addEventListener('mousedown', handleMouseDownClick);
 
@@ -21,6 +22,15 @@ export const Table = () => {
     if (ref && ref.current !== event.target) {
       const boxEl = document.querySelector('.property-box');
       boxEl?.classList.add('hidden');
+    }
+
+    if (textAreaRef && textAreaRef.current !== event.target) {
+      const tableBoxEl = document.querySelector('.input-box');
+      const value = tableBoxEl?.getAttribute('value');
+      if (event.target.id !== 'input-box-id') {
+        console.log(textAreaRef.current.value);
+        tableBoxEl?.classList.add('hidden');
+      }
     }
   };
 
@@ -105,10 +115,17 @@ export const Table = () => {
 
       <div className="table-first-element flex pl-24">
         <div className="table-first-col flex gap-1 w-80 h-9 border-t-2 border-r-2 border-slate-200">
-          <div className="flex gap-1 mt-1">
-            <div></div>
+          <div className="mt-1 max">
+            <TableTextField text={'jjhl'} />
+            <textarea
+              rows={5}
+              cols={37}
+              className="input-box hidden mt-1 w-full rounded border-y-2 border-x-2 shadow-md bg-white z-10 opacity-95"
+              id="input-box-id"
+            ></textarea>
           </div>
         </div>
+
         <div className="table-second-col w-full h-9 border-t-2 border-slate-200">
           <div></div>
         </div>

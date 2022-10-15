@@ -11,6 +11,8 @@ export const Sidebar = () => {
   let content;
   if (pageStatus === 'pending') {
     content = <div>Pending....</div>;
+  } else if (pageStatus === 'failed') {
+    content = <div>You forgot to spin up backend</div>;
   } else if (pageStatus === 'success') {
     content = pages.map((page) => {
       return (
